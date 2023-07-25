@@ -19,10 +19,11 @@ Visual documentation of the application most important areas ([Conduit mind map]
 
 ### Capability test charters
 Before writing any E2E tests, I documented the various capabilities of the application that I plan to cover with tests.
-- [Authentication](./test-charters/authentication.md)
-- [Home page](./test-charters/home-page.md)
+- [Authentication](./capability-checklist/authentication.md)
+- [Header]
 - [Settings]
-- [Article]
+- [Articles]
+- [Profile]
 
 <br>
 

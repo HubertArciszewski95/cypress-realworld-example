@@ -1,10 +1,12 @@
 # Authentication
 should redirect unauthenticated user to home page
 
-## Sign up
-should redirect to home page after sign up as logged in
+## Register
+should display correct link to login page
 
-should display signup validation errors:
+should redirect to home page after registering, as logged in
+
+should display register validation errors:
 - when username is empty
 - when email is empty
 - when password is empty
@@ -15,7 +17,9 @@ should display error for taken username
 
 should display error for taken email
 
-## Sign in
+## Login
+should display correct link to register page
+
 should be able to login and logout
 
 should display login validation errors:

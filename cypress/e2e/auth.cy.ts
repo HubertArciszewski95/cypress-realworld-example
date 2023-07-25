@@ -2,6 +2,7 @@ import RegisterPage from "../page-object/register-page";
 import LoginPage from "../page-object/login-page";
 import HomePage from "../page-object/home-page";
 
+import { faker } from '@faker-js/faker';
 import userExisting from "../fixtures/user-existing.json";
 import userNotExisting from "../fixtures/user-not-existing.json"
 
@@ -24,34 +25,40 @@ describe('Authentication', () => {
         "email@domain..com",       // Multiple dot in the domain portion is invalid
     ];
 
-    beforeEach(() => {
+    before(() => {
         cy.task("db:seed");
     });
 
     it('should redirect unauthenticated user to home page', () => {
         cy.visit("/settings");
-        cy.location("pathname").should("equal", "/");
+        cy.location("hash").should("equal", "#/");
     });
 
-    context('Sign up', () => {
+    context('Register', () => {
 
         beforeEach(() => {
             registerPage.navigate();
         });
 
-        it('should redirect to home page after sign up as logged in', () => {
-            cy.contains("Sign in to your account").should('have.attr', 'href', '#/login');
-
-            registerPage.typeUsername(userNotExisting.username);
-            registerPage.typeEmail(userNotExisting.email);
-            registerPage.typePassword(userNotExisting.password);
-            registerPage.clickSignUp();
-
-            cy.location("pathname").should("equal", "/");
-            homePage.navBar.elements.navItems().should("contain", userNotExisting.username);
+        it('should display correct link to login page', () => {
+            cy.contains("Sign in to your account").should("be.visible").and('have.attr', 'href', '#/login');
         });
 
-        it('should display sign up validation errors', () => {
+        it('should redirect to home page after registering, as logged in', () => {
+            const username = faker.internet.userName();
+            const email = `${username}@example.com`;
+            const password = "testPassword";
+
+            registerPage.typeUsername(username);
+            registerPage.typeEmail(email);
+            registerPage.typePassword(password);
+            registerPage.clickSignUp();
+
+            cy.location("hash").should("equal", "#/");
+            homePage.navBar.elements.navItems().filter(":visible").should("contain", username);
+        });
+
+        it('should display register validation errors', () => {
             registerPage.typeUsername(userNotExisting.username);
             registerPage.elements.usernameInput().clear().blur();
 
@@ -86,7 +93,7 @@ describe('Authentication', () => {
             registerPage.typePassword(userNotExisting.password);
             registerPage.clickSignUp();
 
-            registerPage.elements.errorMessage().should("be.visible").and("contain", "Username has already been taken");
+            registerPage.elements.errorMessage().should("be.visible").and("have.text", "Username has already been taken");
             // cy.visualSnapshot("Display sign up already taken error");
         });
 
@@ -96,27 +103,33 @@ describe('Authentication', () => {
             registerPage.typePassword(userNotExisting.password);
             registerPage.clickSignUp();
 
-            registerPage.elements.errorMessage().should("be.visible").and("contain", "Email has already been taken");
+            registerPage.elements.errorMessage().should("be.visible").and("have.text", "Email has already been taken");
         });
     });
 
-    context('Sign in', () => {
+    context('Login', () => {
 
         beforeEach(() => {
             loginPage.navigate();
         });
 
-        it('should be able to login and logout', () => {
-            cy.contains("Need an account?").should('have.attr', 'href', '#/register');
+        it('should display correct link to register page', () => {
+            cy.contains("Need an account?").should("be.visible").and('have.attr', 'href', '#/register');
+        });
 
+        it('should be able to login and logout', () => {
             loginPage.typeEmail(userExisting.email);
             loginPage.typePassword(userExisting.password);
             loginPage.clickSignIn();
 
             cy.location("pathname").should("equal", "/");
+            // TODO: Should be called header or navHeader.
+            // Also it should be individual PO. Because it's available on all pages. Not only on home.
             homePage.navBar.elements.navItems().should("contain", userExisting.username);
-            
+
             homePage.navBar.clickNavBarItem("Logout");
+
+            cy.location("pathname").should("equal", "/");
             homePage.navBar.elements.navItems().should("not.contain", userExisting.username);
         });
 
