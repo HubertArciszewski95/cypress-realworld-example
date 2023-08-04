@@ -1,5 +1,5 @@
 {
+    "username": "Cypress user",
     "email": "cypressUser@example.com",
-    "password": "s3cret",
-    "username": "Cypress user"
+    "password": "s3cret"
 }

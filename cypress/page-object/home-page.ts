@@ -7,10 +7,6 @@ class HomePage {
 
     }
 
-    get navBar() {
-        return new NavBar();
-    }
-
 }
 
 export default HomePage;

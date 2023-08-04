@@ -1,4 +1,4 @@
-# Authentication
+# Authentication (11 tests)
 should redirect unauthenticated user to home page
 
 ## Register

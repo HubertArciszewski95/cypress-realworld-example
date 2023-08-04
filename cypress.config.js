@@ -12,6 +12,7 @@ module.exports = defineConfig({
     viewportHeight: 1080,
     viewportWidth: 1920,
     video: false,
+    watchForFileChanges: false,
     reporter: "cypress-mochawesome-reporter",
     reporterOptions: {
       configFile: "reporter-config.json",
@@ -22,7 +23,7 @@ module.exports = defineConfig({
 
       on("task", {
         async "db:seed"() {
-          const { data } = await axios.post(`${config.env.apiUrl}/testData/seed`);
+          const { data } = await axios.post("http://localhost:3001/api/testData/seed");
           return data;
         },
       });
