@@ -1,6 +1,6 @@
 import user from '../../fixtures/user-existing.json';
 
-export const login = (): void => {
+export const login = () => {
     cy.request({
         method: 'POST',
         url: `${Cypress.env('apiUrl')}/users/login`,
@@ -10,9 +10,24 @@ export const login = (): void => {
                 password: user.password
             }
         }
-    }).then((res) => {
-        expect(res.status).equal(200);
-        window.localStorage.setItem('jwtToken', res.body.user.token);
+    }).then((response) => {
+        const { email, username, bio, image, token } = response.body.user;
+
+        const loggedUser = {
+            headers: {
+                Authorization: `Token ${token}`,
+            },
+            isAuth: true,
+            loggedUser: {
+                email,
+                username,
+                bio,
+                image,
+                token,
+            },
+        };
+
+        window.localStorage.setItem('loggedUser', JSON.stringify(loggedUser));
     });
 }
 
