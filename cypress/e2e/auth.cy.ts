@@ -51,7 +51,7 @@ describe('Authentication', () => {
             navBar.elements.navItems().filter(":visible").should("contain", username);
         });
 
-        it('should display register validation errors', () => {
+        it('should display register form validation errors', () => {
             registerPage.typeUsername("Jon Snow");
             registerPage.elements.usernameInput().clear().blur();
 
@@ -124,7 +124,7 @@ describe('Authentication', () => {
             navBar.elements.navItems().should("not.contain", userExisting.username);
         });
 
-        it('should display login validation errors', () => {
+        it('should display login form validation errors', () => {
             loginPage.typeEmail("jonSnow@example.com");
             loginPage.elements.emailInput().clear().blur();
 
