@@ -19,7 +19,7 @@ declare global {
              * Allwos to select value in dropdown menu
              * 
              * @example
-             * cy.selectDropdownValue(this.elements.unitFilter(), "1cm");
+             * cy.selectDropdownValue(this.elements.unitFilterInput(), "1cm");
              */
             selectDropdownValue: typeof selectDropdownValue;
         }

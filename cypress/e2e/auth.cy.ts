@@ -1,6 +1,6 @@
 import RegisterPage from "../page-object/register-page";
 import LoginPage from "../page-object/login-page";
-import NavBar from "../page-object/components/nav-bar";
+import Header from "../page-object/components/header";
 
 import { faker } from '@faker-js/faker';
 import userExisting from "../fixtures/user-existing.json";
@@ -9,7 +9,7 @@ import userExisting from "../fixtures/user-existing.json";
 describe('Authentication', () => {
     const registerPage = new RegisterPage();
     const loginPage = new LoginPage();
-    const navBar = new NavBar();
+    const header = new Header();
 
     const wrongEmailFormat = [
         "plainaddress",      // Missing @ sign and domain
@@ -48,7 +48,7 @@ describe('Authentication', () => {
             registerPage.clickSignUp();
 
             cy.location("hash").should("equal", "#/");
-            navBar.elements.navItems().filter(":visible").should("contain", username);
+            header.elements.navItems().filter(":visible").should("contain", username);
         });
 
         it('should display register form validation errors', () => {
@@ -116,12 +116,12 @@ describe('Authentication', () => {
             loginPage.clickSignIn();
 
             cy.location("pathname").should("equal", "/");
-            navBar.elements.navItems().should("contain", userExisting.username);
+            header.elements.navItems().should("contain", userExisting.username);
 
-            navBar.clickNavBarItem("Logout");
+            header.clickNavItem("Logout");
 
             cy.location("pathname").should("equal", "/");
-            navBar.elements.navItems().should("not.contain", userExisting.username);
+            header.elements.navItems().should("not.contain", userExisting.username);
         });
 
         it('should display login form validation errors', () => {
