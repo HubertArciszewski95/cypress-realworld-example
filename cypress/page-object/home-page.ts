@@ -4,6 +4,11 @@ class HomePage {
 
     }
 
+    visit() {
+        cy.step('Visit "Home" page');
+        cy.visit("/");
+    }
+
 }
 
 export default HomePage;

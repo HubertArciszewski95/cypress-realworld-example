@@ -3,7 +3,7 @@ import LoginPage from "../page-object/login-page";
 import Header from "../page-object/components/header";
 
 import { faker } from '@faker-js/faker';
-import userExisting from "../fixtures/user-existing.json";
+import user from "../fixtures/user.json";
 
 
 describe('Authentication', () => {
@@ -30,7 +30,7 @@ describe('Authentication', () => {
     context('Register', () => {
 
         beforeEach(() => {
-            registerPage.navigate();
+            registerPage.visit();
         });
 
         it('should display correct link to login page', () => {
@@ -47,55 +47,66 @@ describe('Authentication', () => {
             registerPage.typePassword(password);
             registerPage.clickSignUp();
 
+            cy.step("Should redirect to Home page");
             cy.location("hash").should("equal", "#/");
+
+            cy.step("User should be logged in");
             header.elements.navItems().filter(":visible").should("contain", username);
         });
 
         it('should display register form validation errors', () => {
             registerPage.typeUsername("Jon Snow");
-            registerPage.elements.usernameInput().clear().blur();
+            registerPage.clearInput("username");
+            registerPage.blurInput("username");
 
-            registerPage.elements.validationMessage("username").should("be.visible").and("contain", "Username is required");
+            cy.step("Should display validation error");
+            registerPage.elements.validationMessage("username").should("be.visible").and("have.text", "Username is required");
 
             registerPage.typeEmail("JonSnow@example.com");
-            registerPage.elements.emailInput().clear().blur();
+            registerPage.clearInput("email");
+            registerPage.blurInput("email");
 
-            registerPage.elements.validationMessage("email").should("be.visible").and("contain", "Email is required");
+            cy.step("Should display validation error");
+            registerPage.elements.validationMessage("email").should("be.visible").and("have.text", "Email is required");
 
             registerPage.typePassword("s3cret");
-            registerPage.elements.passwordInput().clear().blur();
+            registerPage.clearInput("password");
+            registerPage.blurInput("password");
 
-            registerPage.elements.validationMessage("password").should("be.visible").and("contain", "Password is required");
+            cy.step("Should display validation error");
+            registerPage.elements.validationMessage("password").should("be.visible").and("have.text", "Password is required");
 
             registerPage.typePassword('abc');
-            registerPage.elements.validationMessage("password").should("be.visible").and("contain", "Password must have a minimum 4 characters");
 
-            // cy.visualSnapshot("Display sign up required errors");
+            cy.step("Should display validation error");
+            registerPage.elements.validationMessage("password").should("be.visible").and("have.text", "Password must have a minimum 4 characters");
 
             wrongEmailFormat.forEach((email) => {
-                registerPage.elements.emailInput().clear();
+                registerPage.clearInput("email");
                 registerPage.typeEmail(email);
 
-                registerPage.elements.validationMessage("email").should("be.visible").and("contain", "Incorrect email format");
+                cy.step("Should display validation error");
+                registerPage.elements.validationMessage("email").should("be.visible").and("have.text", "Incorrect email format");
             });
         });
 
         it('should display error for taken username', () => {
-            registerPage.typeUsername(userExisting.username);
+            registerPage.typeUsername(user.username);
             registerPage.typeEmail("notExist@example.com");
             registerPage.typePassword("s3cret");
             registerPage.clickSignUp();
 
+            cy.step("Should display error message");
             registerPage.elements.errorMessage().should("be.visible").and("have.text", "Username has already been taken");
-            // cy.visualSnapshot("Display sign up already taken error");
         });
 
         it('should display error for taken email', () => {
             registerPage.typeUsername("notExist");
-            registerPage.typeEmail(userExisting.email);
+            registerPage.typeEmail(user.email);
             registerPage.typePassword("s3cret");
             registerPage.clickSignUp();
 
+            cy.step("Should display error message");
             registerPage.elements.errorMessage().should("be.visible").and("have.text", "Email has already been taken");
         });
     });
@@ -103,7 +114,7 @@ describe('Authentication', () => {
     context('Login', () => {
 
         beforeEach(() => {
-            loginPage.navigate();
+            loginPage.visit();
         });
 
         it('should display correct link to register page', () => {
@@ -111,58 +122,68 @@ describe('Authentication', () => {
         });
 
         it('should be able to login and logout', () => {
-            loginPage.typeEmail(userExisting.email);
-            loginPage.typePassword(userExisting.password);
+            loginPage.typeEmail(user.email);
+            loginPage.typePassword(user.password);
             loginPage.clickSignIn();
+            
+            cy.step("Should redirect to Home page");
+            cy.location("hash").should("equal", "#/");
 
-            cy.location("pathname").should("equal", "/");
-            header.elements.navItems().should("contain", userExisting.username);
+            cy.step("User should be logged in");
+            header.elements.navItems().should("contain", user.username);
 
             header.clickNavItem("Logout");
 
-            cy.location("pathname").should("equal", "/");
-            header.elements.navItems().should("not.contain", userExisting.username);
+            cy.step("User should be logged out");
+            cy.location("hash").should("equal", "#/");
+            header.elements.navItems().should("not.contain", user.username);
         });
 
         it('should display login form validation errors', () => {
             loginPage.typeEmail("jonSnow@example.com");
-            loginPage.elements.emailInput().clear().blur();
+            loginPage.clearInput("email");
+            loginPage.blurInput("email");
 
-            loginPage.elements.validationMessage("email").should("be.visible").and("contain", "Email is required");
+            cy.step("Should display validation error");
+            loginPage.elements.validationMessage("email").should("be.visible").and("have.text", "Email is required");
 
             loginPage.typePassword("s3cret");
-            loginPage.elements.passwordInput().clear().blur();
+            loginPage.clearInput("password");
+            loginPage.blurInput("password");
 
-            loginPage.elements.validationMessage("password").should("be.visible").and("contain", "Password is required");
+            cy.step("Should display validation error");
+            loginPage.elements.validationMessage("password").should("be.visible").and("have.text", "Password is required");
 
             loginPage.typePassword("abc");
-            loginPage.elements.validationMessage("password").should("be.visible").and("contain", "Password must have a minimum 4 characters");
 
-            // cy.visualSnapshot("Display sign up required errors");
+            cy.step("Should display validation error");
+            loginPage.elements.validationMessage("password").should("be.visible").and("have.text", "Password must have a minimum 4 characters");
 
             wrongEmailFormat.forEach((email) => {
-                loginPage.elements.emailInput().clear();
+                loginPage.clearInput("email");
                 loginPage.typeEmail(email);
 
-                loginPage.elements.validationMessage("email").should("be.visible").and("contain", "Incorrect email format");
+                cy.step("Should display validation error");
+                loginPage.elements.validationMessage("email").should("be.visible").and("have.text", "Incorrect email format");
             });
         });
 
-        it('should display error for invalid user', () => {
-            loginPage.typeEmail("invalid@email.com");
+        it('should display error for not existing user', () => {
+            loginPage.typeEmail("notExisting@email.com");
             loginPage.typePassword("invalidPassword");
             loginPage.clickSignIn();
 
-            loginPage.elements.errorMessage().should("be.visible").and("contain", "Email or password is invalid");
-            // cy.visualSnapshot("Display sign in invalid user error");
+            cy.step("Should display error message");
+            loginPage.elements.errorMessage().should("be.visible").and("have.text", "Email or password is invalid");
         });
 
         it('should display error for existing user when invalid password', () => {
-            loginPage.typeEmail(userExisting.email);
+            loginPage.typeEmail(user.email);
             loginPage.typePassword("invalidPassword");
             loginPage.clickSignIn();
 
-            loginPage.elements.errorMessage().should("be.visible").and("contain", "Email or password is invalid");
+            cy.step("Should display error message");
+            loginPage.elements.errorMessage().should("be.visible").and("have.text", "Email or password is invalidd");
         });
     });
 });

@@ -1,5 +1,8 @@
+// ** COMMANDS **
 import './commands/login';
 import "./commands/getByTestId";
 import "./commands/selectDropdownValue";
-import "cypress-mochawesome-reporter/register";
 
+// ** PLUGINS **
+import 'cypress-plugin-steps'
+import "cypress-mochawesome-reporter/register";

@@ -1,13 +1,11 @@
-import user from '../../fixtures/user-existing.json';
-
-export const login = () => {
+export const login = ((email: string, password: string) => {
     cy.request({
         method: 'POST',
         url: `${Cypress.env('apiUrl')}/users/login`,
         body: {
             user: {
-                email: user.email,
-                password: user.password
+                email,
+                password
             }
         }
     }).then((response) => {
@@ -29,6 +27,6 @@ export const login = () => {
 
         window.localStorage.setItem('loggedUser', JSON.stringify(loggedUser));
     });
-}
+});
 
 Cypress.Commands.add('login', login);

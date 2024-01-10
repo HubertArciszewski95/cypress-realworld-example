@@ -1,6 +1,4 @@
-import user from "../../fixtures/user-existing.json";
 import { sharedElements } from "./shared-elements";
-
 
 type NavItemName =
     | "Home"
@@ -15,16 +13,17 @@ class Header {
 
     elements = {
         navItems: () => cy.getByTestId("nav-item"),
-        navItem: (navItem: NavItemName) => this.elements.navItems().contains(navItem),
+        navItem: (navItemName: NavItemName) => this.elements.navItems().contains(navItemName),
         dropdownMenuItems: () => sharedElements.dropdownMenuItems(),
         dropdownMenuItem: (menuItem: NavItemName) => sharedElements.dropdownMenuItem(menuItem),
     };
 
     clickNavItem(navItem: NavItemName) {
-        const navItemUnderDropdown = [ "Profile", 'Settings', "Logout"];
+        const navItemUnderDropdown: Array<NavItemName> = ["Profile", 'Settings', "Logout"];
 
+        cy.step(`Click "${navItem}" nav item`);
         if (navItemUnderDropdown.includes(navItem)) {
-            cy.selectDropdownValue(this.elements.navItems().contains(user.username), navItem);
+            cy.selectDropdownValue(this.elements.navItems().last(), navItem);
         } else {
             this.elements.navItem(navItem).click();
         }

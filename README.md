@@ -1,14 +1,11 @@
 # ![RealWorld Example App](logo.png)
-This is exemplary project of E2E tests written in Cypress + TypeScript, using Page Object pattern. Application under test is a Medium.com colne (called [Conduit](https://demo.realworld.io/#/)) 
+This is exemplary project of E2E tests written in Cypress + TypeScript, using Page Object Model pattern. Application under test is a Medium.com colne (called [Conduit](https://demo.realworld.io/#/)) 
 
 Frontend and backend was done by [TonyMckes](https://github.com/TonyMckes/conduit-realworld-example-app) with my little modifications. 
 
 - **Reporting**: cypress-mochawesome-reporter
-- **Visual regression**: Percy
-- **Continous integration**: ???
-
-
-To see in more details what has been done go to [project board.](https://github.com/users/HubertArciszewski95/projects/2/views/1)
+- **Visual regression**: TODO
+- **Continous integration**: TODO
 
 <br>
 
@@ -20,10 +17,10 @@ Visual documentation of the application most important areas ([Conduit mind map]
 ### Capability test charters
 Before writing any E2E tests, I documented the various capabilities of the application that I plan to cover with tests.
 - [Authentication](./capability-checklist/authentication.md)
-- [Header]
-- [Settings]
-- [Articles]
-- [Profile]
+- [Header](./capability-checklist/header.md)
+- [Settings] TODO
+- [Articles] TODO
+- [Profile] TODO
 
 <br>
 
