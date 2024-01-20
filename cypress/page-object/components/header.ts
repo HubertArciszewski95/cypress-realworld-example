@@ -1,4 +1,4 @@
-import { sharedElements } from "./shared-elements";
+import { commonElements } from "./common-elements";
 
 type NavItemName =
     | "Home"
@@ -14,8 +14,8 @@ class Header {
     elements = {
         navItems: () => cy.getByTestId("nav-item"),
         navItem: (navItemName: NavItemName) => this.elements.navItems().contains(navItemName),
-        dropdownMenuItems: () => sharedElements.dropdownMenuItems(),
-        dropdownMenuItem: (menuItem: NavItemName) => sharedElements.dropdownMenuItem(menuItem),
+        dropdownMenuItems: () => commonElements.dropdownMenuItems(),
+        dropdownMenuItem: (menuItem: NavItemName) => commonElements.dropdownMenuItem(menuItem),
     };
 
     clickNavItem(navItem: NavItemName) {

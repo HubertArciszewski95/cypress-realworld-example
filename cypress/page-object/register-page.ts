@@ -1,3 +1,5 @@
+import { commonElements } from "./components/common-elements";
+
 type InputName =
     | "username"
     | "email"
@@ -7,11 +9,11 @@ class RegisterPage {
 
     elements = {
         usernameInput: () => cy.getByTestId("username-input"),
-        emailInput: () => cy.getByTestId("email-input"),
-        passwordInput: () => cy.getByTestId("password-input"),
+        emailInput: () => commonElements.emailInput(),
+        passwordInput: () => commonElements.passwordInput(),
         signUpButton: () => cy.getByTestId("signup-btn"),
         validationMessage: (inputName: InputName) => cy.getByTestId(`${inputName}-validation-msg`),
-        errorMessage: () => cy.getByTestId("error-message")
+        errorMessage: () => commonElements.errorMessage(),
     }
 
     visit() {
@@ -35,7 +37,7 @@ class RegisterPage {
     }
 
     clickSignUp() {
-        cy.intercept("POST", `${Cypress.env("apiUrl")}/users`).as("signup");
+        cy.intercept("POST", `${Cypress.env("API_URL")}/users`).as("signup");
 
         cy.step('Click "Sign Up" button');
         this.elements.signUpButton().click();
@@ -43,8 +45,8 @@ class RegisterPage {
     }
 
     clearInput(inputName: InputName) {
-        cy.step(`Clear "${inputName} input"`);
-        
+        cy.step(`Clear "${inputName}" input`);
+
         switch (inputName) {
             case "username":
                 this.elements.usernameInput().clear();
@@ -53,7 +55,7 @@ class RegisterPage {
             case "email":
                 this.elements.emailInput().clear();
                 break;
-                
+
             case "password":
                 this.elements.passwordInput().clear();
                 break;
@@ -61,7 +63,7 @@ class RegisterPage {
     }
 
     blurInput(inputName: InputName) {
-        cy.step(`Blur "${inputName} input"`);
+        cy.step(`Blur "${inputName}" input`);
 
         switch (inputName) {
             case "username":
@@ -71,7 +73,7 @@ class RegisterPage {
             case "email":
                 this.elements.emailInput().blur();
                 break;
-                
+
             case "password":
                 this.elements.passwordInput().blur();
                 break;

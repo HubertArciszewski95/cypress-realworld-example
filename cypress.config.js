@@ -3,7 +3,7 @@ const axios = require("./frontend/node_modules/axios");
 
 module.exports = defineConfig({
   env: {
-    apiUrl: "http://localhost:3000/api"
+    API_URL: "http://localhost:3000/api"
   },
   e2e: {
     baseUrl: "http://localhost:3000/#",

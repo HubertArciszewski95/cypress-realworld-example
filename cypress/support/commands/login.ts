@@ -1,7 +1,7 @@
 export const login = ((email: string, password: string) => {
     cy.request({
         method: 'POST',
-        url: `${Cypress.env('apiUrl')}/users/login`,
+        url: `${Cypress.env('API_URL')}/users/login`,
         body: {
             user: {
                 email,

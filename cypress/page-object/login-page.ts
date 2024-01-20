@@ -1,3 +1,5 @@
+import { commonElements } from "./components/common-elements";
+
 type InputName =
     | "email"
     | "password"
@@ -5,11 +7,11 @@ type InputName =
 class LoginPage {
 
     elements = {
-        emailInput: () => cy.getByTestId("email-input"),
-        passwordInput: () => cy.getByTestId("password-input"),
+        emailInput: () => commonElements.emailInput(),
+        passwordInput: () => commonElements.passwordInput(),
         signInButton: () => cy.getByTestId("signin-btn"),
         validationMessage: (inputName: InputName) => cy.getByTestId(`${inputName}-validation-msg`),
-        errorMessage: () => cy.getByTestId("error-message")
+        errorMessage: () => commonElements.errorMessage(),
     }
 
     visit() {
@@ -28,7 +30,7 @@ class LoginPage {
     }
 
     clickSignIn() {
-        cy.intercept("POST", `${Cypress.env("apiUrl")}/users/login`).as("signup");
+        cy.intercept("POST", `${Cypress.env("API_URL")}/users/login`).as("signup");
 
         cy.step('Click "Sign In" button');
         this.elements.signInButton().click();
