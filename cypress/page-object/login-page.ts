@@ -7,8 +7,8 @@ type InputName =
 class LoginPage {
 
     elements = {
-        emailInput: () => commonElements.emailInput(),
-        passwordInput: () => commonElements.passwordInput(),
+        emailInput: () => cy.getByTestId("email-input"),
+        passwordInput: () => cy.getByTestId("password-input"),
         signInButton: () => cy.getByTestId("signin-btn"),
         validationMessage: (inputName: InputName) => cy.getByTestId(`${inputName}-validation-msg`),
         errorMessage: () => commonElements.errorMessage(),

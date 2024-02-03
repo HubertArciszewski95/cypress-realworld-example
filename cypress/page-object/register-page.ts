@@ -9,8 +9,8 @@ class RegisterPage {
 
     elements = {
         usernameInput: () => cy.getByTestId("username-input"),
-        emailInput: () => commonElements.emailInput(),
-        passwordInput: () => commonElements.passwordInput(),
+        emailInput: () => cy.getByTestId("email-input"),
+        passwordInput: () => cy.getByTestId("password-input"),
         signUpButton: () => cy.getByTestId("signup-btn"),
         validationMessage: (inputName: InputName) => cy.getByTestId(`${inputName}-validation-msg`),
         errorMessage: () => commonElements.errorMessage(),
