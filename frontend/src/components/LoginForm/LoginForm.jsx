@@ -2,13 +2,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import userLogin from "../../services/userLogin";
-import { useLoginFormValidator } from "./hooks/useLoginFormValidator";
-import clsx from "clsx";
+import { useFormValidator } from "../../helpers/formValidator/useFormValidator";
 import styles from "../../ValidationForm.module.css";
+import FormFieldset from "../FormFieldset";
+
 
 function LoginForm({ onError }) {
 	const [form, setForm] = useState({ email: "", password: "" });
-	const { errors, validateForm, onBlurField } = useLoginFormValidator(form);
+	const { errors, validateForm, onBlurField } = useFormValidator(form);
 	const { setAuthState } = useAuth();
 	const navigate = useNavigate();
 
@@ -43,63 +44,29 @@ function LoginForm({ onError }) {
 
 	return (
 		<form onSubmit={onSubmitForm}>
-			<div className={"form-group"}>
-				<input
-					className={clsx(
-						"form-control form-control-lg",
-						errors.email.dirty &&
-						errors.email.error &&
-						styles.formFieldError
-					)}
-					type="text"
-					aria-label="Email field"
-					placeholder="Email"
-					name="email"
-					data-testid="email-input"
-					value={form.email}
-					onChange={onUpdateField}
-					onBlur={onBlurField}
-				/>
-				{errors.email.dirty && errors.email.error ? (
-					<p className={styles.formFieldErrorMessage}
-						data-testid="email-validation-msg">
-						{errors.email.message}
-					</p>
-				) : null}
-			</div>
+			<FormFieldset
+				placeholder={"Email"}
+				name="email"
+				testid="email-input"
+				handler={onUpdateField}
+				onBlur={onBlurField}
+				value={form.email}
+				error={errors.email.dirty && errors.email.error && errors.email.message}
+			></FormFieldset>
 
-			<div className={"form-group"}>
-				<input
-					className={clsx(
-						"form-control form-control-lg",
-						errors.password.dirty &&
-						errors.password.error &&
-						styles.formFieldError
-					)}
-					type="password"
-					aria-label="Password field"
-					placeholder="Password"
-					name="password"
-					data-testid="password-input"
-					value={form.password}
-					onChange={onUpdateField}
-					onBlur={onBlurField}
-				/>
-				{errors.password.dirty && errors.password.error ? (
-					<p
-						className={styles.formFieldErrorMessage}
-						data-testid="password-validation-msg">
-						{errors.password.message}
-					</p>
-				) : null}
-			</div>
+			<FormFieldset
+				placeholder={"Password"}
+				name="password"
+				testid="password-input"
+				handler={onUpdateField}
+				onBlur={onBlurField}
+				value={form.password}
+				type="password"
+				error={errors.password.dirty && errors.password.error && errors.password.message}
+			></FormFieldset>
 
 			<div className={styles.formActions}>
-				<button
-					className="btn btn-lg btn-primary pull-xs-right"
-					type="submit"
-					data-testid="signin-btn"
-				>
+				<button className="btn btn-lg btn-primary pull-xs-right" type="submit" data-testid="signin-btn">
 					Sign in
 				</button>
 			</div>

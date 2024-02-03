@@ -183,7 +183,7 @@ describe('Authentication', () => {
             loginPage.clickSignIn();
 
             cy.step("Should display error message");
-            loginPage.elements.errorMessage().should("be.visible").and("have.text", "Email or password is invalidd");
+            loginPage.elements.errorMessage().should("be.visible").and("have.text", "Email or password is invalid");
         });
     });
 });
